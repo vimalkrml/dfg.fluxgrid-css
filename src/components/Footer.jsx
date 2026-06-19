@@ -78,12 +78,20 @@ export default function Footer() {
                                 width: '32px',
                                 height: '32px',
                                 borderRadius: '8px',
-                                backgroundColor: 'var(--c-primary-600)',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                overflow: 'hidden',
                             }}>
-                                <span style={{ color: 'white', fontWeight: 900, fontSize: '14px' }}>F</span>
+                                <img
+                                    src="/favicon.svg"
+                                    alt="FluxGrid CSS Logo"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                    }}
+                                />
                             </div>
                             <span style={{ fontWeight: 700, fontSize: '17px' }}>
                                 FluxGrid <span style={{ color: 'var(--c-primary-500)' }}>CSS</span>
