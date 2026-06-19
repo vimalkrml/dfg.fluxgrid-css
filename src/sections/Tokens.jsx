@@ -1,3 +1,23 @@
+import { useState, useEffect } from 'react'
+
+const fonts = [
+    { label: 'Inter', class: 'c-font-inter', family: '"Inter", sans-serif' },
+    { label: 'Poppins', class: 'c-font-poppins', family: '"Poppins", sans-serif' },
+    { label: 'Roboto', class: 'c-font-roboto', family: '"Roboto", sans-serif' },
+    { label: 'Montserrat', class: 'c-font-montserrat', family: '"Montserrat", sans-serif' },
+    { label: 'Open Sans', class: 'c-font-open-sans', family: '"Open Sans", sans-serif' },
+    { label: 'Lato', class: 'c-font-lato', family: '"Lato", sans-serif' },
+    { label: 'Nunito', class: 'c-font-nunito', family: '"Nunito", sans-serif' },
+    { label: 'Merriweather', class: 'c-font-merriweather', family: '"Merriweather", serif' },
+    { label: 'Playfair', class: 'c-font-playfair', family: '"Playfair Display", serif' },
+    { label: 'Fira Code', class: 'c-font-fira-code', family: '"Fira Code", monospace' },
+    { label: 'DM Sans', class: 'c-font-dm-sans', family: '"DM Sans", sans-serif' },
+    { label: 'Space Grotesk', class: 'c-font-space-grotesk', family: '"Space Grotesk", sans-serif' },
+    { label: 'Outfit', class: 'c-font-outfit', family: '"Outfit", sans-serif' },
+    { label: 'Jakarta', class: 'c-font-jakarta', family: '"Plus Jakarta Sans", sans-serif' },
+    { label: 'Geist', class: 'c-font-geist', family: '"Geist", sans-serif' },
+]
+
 const colorGroups = [
     {
         label: 'Primary',
@@ -93,29 +113,24 @@ const radiusTokens = [
     { name: 'rounded-full', value: '9999px' },
 ]
 
-function CardWrap({ title, children }) {
-    return (
-        <div className="c-rounded-xl c-border c-border-base c-overflow-hidden c-shadow-sm">
-            <div
-                className="c-px-4 c-py-3 c-border-b c-border-base"
-                style={{ backgroundColor: 'color-mix(in srgb, var(--c-gray-100) 50%, transparent)' }}
-            >
-                <span className="c-text-xs c-font-semibold c-text-muted c-uppercase c-tracking-wide">
-                    {title}
-                </span>
-            </div>
-            <div className="c-p-6" style={{ backgroundColor: 'var(--c-bg)' }}>
-                {children}
-            </div>
-        </div>
-    )
-}
+const tabs = ['Fonts', 'Colors', 'Spacing', 'Shadows', 'Tokens']
 
 export default function Tokens() {
+    const [activeTab, setActiveTab] = useState('Fonts')
+    const [selectedFont, setSelectedFont] = useState(fonts[0])
+
+    useEffect(() => {
+        document.documentElement.style.setProperty('--c-font-sans', selectedFont.family)
+        return () => {
+            document.documentElement.style.removeProperty('--c-font-sans')
+        }
+    }, [selectedFont])
+
     return (
-        <section id="tokens" className="c-py-24 c-border-t c-border-base">
+        <section id="tokens" style={{ padding: '96px 0', borderTop: '1px solid var(--c-border)' }}>
             <div className="c-container">
-                <div className="c-text-center c-mb-16">
+
+                <div style={{ textAlign: 'center', marginBottom: '48px' }}>
                     <h2 className="c-text-4xl c-font-black c-mb-4">
                         Design <span className="c-text-primary-500">Tokens</span>
                     </h2>
@@ -124,102 +139,269 @@ export default function Tokens() {
                     </p>
                 </div>
 
-                <div className="c-flex c-flex-col c-gap-8">
+                {/* Tab bar */}
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '4px',
+                        padding: '4px',
+                        borderRadius: '12px',
+                        backgroundColor: 'var(--c-gray-100)',
+                        marginBottom: '32px',
+                        overflowX: 'auto',
+                    }}
+                >
+                    {tabs.map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
+                            style={{
+                                flex: 1,
+                                minWidth: '80px',
+                                padding: '8px 16px',
+                                borderRadius: '8px',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                border: 'none',
+                                transition: 'all 200ms',
+                                whiteSpace: 'nowrap',
+                                backgroundColor: activeTab === tab ? 'var(--c-bg)' : 'transparent',
+                                color: activeTab === tab ? 'var(--c-primary-600)' : 'var(--c-muted)',
+                                boxShadow: activeTab === tab ? 'var(--c-shadow-sm)' : 'none',
+                            }}
+                        >
+                            {tab}
+                        </button>
+                    ))}
+                </div>
 
-                    <CardWrap title="Color Palette">
-                        <div className="c-flex c-flex-col c-gap-6">
+                {/* Tab content */}
+                <div
+                    style={{
+                        borderRadius: '16px',
+                        border: '1px solid var(--c-border)',
+                        backgroundColor: 'var(--c-bg)',
+                        overflow: 'hidden',
+                    }}
+                >
+
+                    {/* Fonts tab */}
+                    {activeTab === 'Fonts' && (
+                        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                <label className="c-label">Select a font — updates the entire site</label>
+                                <select
+                                    className="c-select"
+                                    value={selectedFont.class}
+                                    onChange={(e) => {
+                                        const found = fonts.find((f) => f.class === e.target.value)
+                                        if (found) setSelectedFont(found)
+                                    }}
+                                >
+                                    {fonts.map((f) => (
+                                        <option key={f.class} value={f.class}>{f.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div
+                                style={{
+                                    padding: '12px 16px',
+                                    borderRadius: '8px',
+                                    backgroundColor: 'var(--c-gray-950)',
+                                    color: 'var(--c-gray-100)',
+                                    fontFamily: 'monospace',
+                                    fontSize: '13px',
+                                    overflowX: 'auto',
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                --c-font-sans: {selectedFont.family};
+                            </div>
+
+                            <div
+                                style={{
+                                    border: '1px solid var(--c-border)',
+                                    borderRadius: '12px',
+                                    padding: '20px',
+                                    fontFamily: selectedFont.family,
+                                }}
+                            >
+                                <div style={{ fontSize: '11px', color: 'var(--c-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '12px' }}>
+                                    Preview — {selectedFont.label}
+                                </div>
+                                <p style={{ fontSize: '28px', fontWeight: 700, marginBottom: '4px' }}>FluxGrid CSS</p>
+                                <p style={{ fontSize: '15px', fontWeight: 500, marginBottom: '8px' }}>A utility-first CSS framework.</p>
+                                <p style={{ fontSize: '14px', color: 'var(--c-muted)', marginBottom: '16px' }}>
+                                    Zero build step. Dark mode. Animations. All in one.
+                                </p>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    <button className="c-btn c-btn-primary c-btn-sm">Get Started</button>
+                                    <button className="c-btn c-btn-outline c-btn-sm">View Docs</button>
+                                </div>
+                            </div>
+
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+                                    gap: '8px',
+                                }}
+                            >
+                                {fonts.map((f) => (
+                                    <button
+                                        key={f.class}
+                                        onClick={() => setSelectedFont(f)}
+                                        style={{
+                                            fontFamily: f.family,
+                                            padding: '10px 8px',
+                                            textAlign: 'left',
+                                            borderRadius: '8px',
+                                            border: '1px solid',
+                                            cursor: 'pointer',
+                                            transition: 'all 200ms',
+                                            borderColor: selectedFont.class === f.class ? 'var(--c-primary-500)' : 'var(--c-border)',
+                                            backgroundColor: selectedFont.class === f.class ? 'var(--c-primary-50)' : 'transparent',
+                                            color: selectedFont.class === f.class ? 'var(--c-primary-700)' : 'var(--c-fg)',
+                                        }}
+                                    >
+                                        <div style={{ fontSize: '11px', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            {f.label}
+                                        </div>
+                                        <div style={{ fontSize: '18px', marginTop: '2px' }}>Aa</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Colors tab */}
+                    {activeTab === 'Colors' && (
+                        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                             {colorGroups.map((group) => (
                                 <div key={group.label}>
                                     <div className="c-text-sm c-font-semibold c-mb-2">{group.label}</div>
-                                    <div className="c-flex c-gap-1" style={{ flexWrap: 'wrap' }}>
+                                    <div style={{ display: 'flex', gap: '4px' }}>
                                         {group.shades.map((shade) => (
                                             <div
                                                 key={shade.name}
-                                                className="c-flex-1 c-rounded-md c-p-2 c-text-center"
                                                 style={{
+                                                    flex: 1,
+                                                    minWidth: 0,
                                                     backgroundColor: shade.var,
-                                                    minWidth: '48px',
                                                     color: shade.text === 'light' ? 'white' : '#111827',
+                                                    borderRadius: '6px',
+                                                    padding: '10px 2px',
+                                                    textAlign: 'center',
                                                 }}
                                             >
-                                                <div className="c-text-xs c-font-semibold">{shade.name}</div>
+                                                <div style={{ fontSize: '9px', fontWeight: 600 }}>{shade.name}</div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    </CardWrap>
+                    )}
 
-                    <CardWrap title="Spacing Scale">
-                        <div className="c-overflow-x-auto">
-                            <div className="c-flex c-flex-col c-gap-2" style={{ minWidth: '400px' }}>
-                                {spacingScale.map((scale, i) => (
-                                    <div key={scale} className="c-flex c-items-center c-gap-4">
-                                        <div className="c-text-xs c-font-mono c-text-muted" style={{ width: '60px' }}>
-                                            space-{scale}
-                                        </div>
-                                        <div className="c-text-xs c-text-muted" style={{ width: '40px' }}>
-                                            {spacingPx[i]}px
-                                        </div>
+                    {/* Spacing tab */}
+                    {activeTab === 'Spacing' && (
+                        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            {spacingScale.map((scale, i) => (
+                                <div key={scale} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{ width: '48px', flexShrink: 0, fontSize: '12px', fontFamily: 'monospace', color: 'var(--c-muted)' }}>
+                                        {scale}
+                                    </div>
+                                    <div style={{ width: '40px', flexShrink: 0, fontSize: '12px', color: 'var(--c-muted)' }}>
+                                        {spacingPx[i]}px
+                                    </div>
+                                    <div style={{ flex: 1, overflow: 'hidden' }}>
                                         <div
-                                            className="c-rounded c-bg-primary-500"
-                                            style={{ height: '8px', width: `${spacingPx[i]}px`, minWidth: '2px' }}
+                                            style={{
+                                                height: '10px',
+                                                borderRadius: '4px',
+                                                backgroundColor: 'var(--c-primary-500)',
+                                                width: spacingPx[i] === 0 ? '3px' : `${Math.min((spacingPx[i] / 128) * 100, 100)}%`,
+                                            }}
                                         />
                                     </div>
-                                ))}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Shadows tab */}
+                    {activeTab === 'Shadows' && (
+                        <div style={{ padding: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '32px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <div className="c-text-sm c-font-semibold c-mb-3">Box Shadows</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {shadowTokens.map((s) => (
+                                        <div
+                                            key={s.name}
+                                            style={{
+                                                padding: '16px',
+                                                borderRadius: '10px',
+                                                textAlign: 'center',
+                                                boxShadow: s.var,
+                                                backgroundColor: 'var(--c-white)',
+                                            }}
+                                        >
+                                            <code style={{ fontSize: '12px', color: 'var(--c-muted)', fontFamily: 'monospace' }}>
+                                                .c-{s.name}
+                                            </code>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <div className="c-text-sm c-font-semibold c-mb-3">Border Radius</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    {radiusTokens.map((r) => (
+                                        <div key={r.name} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                            <div
+                                                style={{
+                                                    width: '40px',
+                                                    height: '40px',
+                                                    flexShrink: 0,
+                                                    backgroundColor: 'var(--c-primary-500)',
+                                                    borderRadius: r.value,
+                                                }}
+                                            />
+                                            <div>
+                                                <div className="c-text-sm c-font-medium">.c-{r.name}</div>
+                                                <div className="c-text-xs c-text-muted">{r.value}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </CardWrap>
+                    )}
 
-                    <div className="c-grid c-gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-
-                        <CardWrap title="Shadows">
-                            <div className="c-flex c-flex-col c-gap-4">
-                                {shadowTokens.map((s) => (
-                                    <div
-                                        key={s.name}
-                                        className="c-p-4 c-rounded-lg c-text-center c-bg-white"
-                                        style={{ boxShadow: s.var }}
-                                    >
-                                        <code className="c-text-xs c-font-mono c-text-gray-600">.c-{s.name}</code>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardWrap>
-
-                        <CardWrap title="Border Radius">
-                            <div className="c-flex c-flex-col c-gap-4">
-                                {radiusTokens.map((r) => (
-                                    <div key={r.name} className="c-flex c-items-center c-gap-4">
-                                        <div
-                                            className="c-size-10 c-bg-primary-500 c-flex-shrink-0"
-                                            style={{ borderRadius: r.value }}
-                                        />
-                                        <div>
-                                            <div className="c-text-sm c-font-medium">.c-{r.name}</div>
-                                            <div className="c-text-xs c-text-muted">{r.value}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardWrap>
-
-                    </div>
-
-                    <CardWrap title="Override Tokens">
-                        <pre
-                            className="c-overflow-x-auto c-text-xs c-font-mono"
-                            style={{
-                                backgroundColor: 'var(--c-gray-950)',
-                                color: 'var(--c-gray-100)',
-                                lineHeight: '1.6',
-                                padding: '16px',
-                                borderRadius: '8px',
-                            }}
-                        >
-                            <code>{`:root {
-  /* Brand color */
+                    {/* Tokens tab */}
+                    {activeTab === 'Tokens' && (
+                        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <p className="c-text-sm c-text-muted">
+                                Override any token in your own stylesheet. Changes cascade through all utilities automatically.
+                            </p>
+                            <pre
+                                style={{
+                                    backgroundColor: 'var(--c-gray-950)',
+                                    color: 'var(--c-gray-100)',
+                                    padding: '20px',
+                                    borderRadius: '10px',
+                                    fontSize: '13px',
+                                    fontFamily: 'monospace',
+                                    lineHeight: '1.8',
+                                    overflowX: 'auto',
+                                    margin: 0,
+                                }}
+                            >
+                                <code>{`:root {
+  /* Brand */
   --c-primary-500: #6C63FF;
   --c-primary-600: #5a52d5;
 
@@ -227,20 +409,24 @@ export default function Tokens() {
   --c-font-sans: "Inter", sans-serif;
   --c-font-mono: "Fira Code", monospace;
 
-  /* Spacing */
+  /* Shape */
   --c-radius-md: 10px;
+  --c-radius-lg: 16px;
 
-  /* Shadows */
+  /* Elevation */
   --c-shadow-md: 0 4px 20px rgba(0,0,0,0.1);
 
   /* Semantic */
   --c-bg: #0f172a;
   --c-fg: #f8fafc;
+  --c-muted: #94a3b8;
   --c-border: #1e293b;
+  --c-accent: #6C63FF;
 }`}
-                            </code>
-                        </pre>
-                    </CardWrap>
+                                </code>
+                            </pre>
+                        </div>
+                    )}
 
                 </div>
             </div>

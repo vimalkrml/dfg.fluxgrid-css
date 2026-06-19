@@ -14,7 +14,7 @@ export default function App() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <div className="c-min-h-screen c-bg-base c-text-fg c-transition-colors">
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--c-bg)', color: 'var(--c-fg)', transition: 'background-color 300ms, color 300ms' }}>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
