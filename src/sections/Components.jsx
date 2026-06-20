@@ -13,6 +13,7 @@ function CustomSelect({ id, placeholder = 'Choose an option', options = [], defa
                     <path d="m6 9 6 6 6-6" />
                 </svg>
             </label>
+            <label className="c-select-backdrop" htmlFor={id}></label>
             <ul className="c-select-dropdown">
                 {options.map((opt) => (
                     <li
@@ -125,7 +126,7 @@ function Row({ item }) {
                     <span className="c-text-xs c-font-semibold c-text-muted c-uppercase c-tracking-wide">{item.title}</span>
                 </div>
                 <div className="c-col-12 c-col-md-9 c-py-3 c-flex c-items-center c-justify-between c-gap-3" style={{ flexWrap: 'wrap' }}>
-                    <div style={{ minWidth: 0, maxWidth: '100%' }}>{item.preview}</div>
+                    <div style={{ minWidth: 0, maxWidth: '260px', width: '100%' }}>{item.preview}</div>
                     <button
                         onClick={() => setShowCode((v) => !v)}
                         className="c-btn c-btn-ghost c-btn-xs c-font-mono c-flex-shrink-0"
@@ -152,7 +153,8 @@ export default function Components() {
             <div className="c-container">
                 <div
                     ref={titleRef}
-                    className={`c-text-center c-mb-10 c-md-mb-12 ${titleIn ? 'c-animate-fade-in-up' : 'c-opacity-0'}`}
+                    className={titleIn ? 'c-animate-fade-in-up' : ''}
+                    style={{ opacity: titleIn ? undefined : 0, willChange: 'opacity, transform', textAlign: 'center', marginBottom: '40px' }}
                 >
                     <h2 className="c-text-3xl c-md-text-4xl c-font-black c-mb-4">
                         Ready-made <span className="c-text-primary-500">Components</span>
