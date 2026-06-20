@@ -44,8 +44,6 @@ const allAnimations = [
 const categories = ['All', 'Fade', 'Slide', 'Scale', 'Flip', 'Continuous', 'Attention', 'Special']
 const PAGE_SIZE = 12
 
-// Animations that end in a hidden/transformed state need special handling
-// so the demo dot doesn't disappear after playing once.
 const EXIT_ANIMATIONS = new Set([
     'c-animate-fade-out',
     'c-animate-scale-out',

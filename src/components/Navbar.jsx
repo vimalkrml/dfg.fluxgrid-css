@@ -190,9 +190,7 @@ export default function Navbar({ theme, toggleTheme }) {
                     >
                         <div className="c-flex c-items-center c-justify-between c-px-5 c-py-4 c-border-b c-border-base">
                             <div className="c-flex c-items-center c-gap-2">
-                                <span className="c-size-7 c-rounded-md c-flex c-items-center c-justify-center c-bg-primary-600">
-                                    <span className="c-text-white c-font-black c-text-sm">F</span>
-                                </span>
+                                <img src="/favicon.svg" alt="FluxGrid CSS" className="c-size-4 c-flex-shrink-0" />
                                 <span className="c-font-bold c-text-base">FluxGrid <span className="c-text-primary-500">CSS</span></span>
                             </div>
                             <button onClick={() => setMenuOpen(false)} className="c-btn c-btn-icon-sm c-border c-border-base" aria-label="Close menu">
