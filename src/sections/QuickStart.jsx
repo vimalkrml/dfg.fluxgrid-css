@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Terminal, FileCode, Play } from 'lucide-react'
 import useInView from '../hooks/useInView'
 
@@ -14,22 +15,23 @@ const steps = [
         step: '02', icon: FileCode, title: 'Import in your project',
         desc: 'Import the full bundle or only the modules you need.',
         tabs: [
-            { label: 'React / Vite', code: `// main.jsx\nimport '@datafluxgrid/fluxgrid-css/src/css/index.css'` },
+            { label: 'React', code: `import '@datafluxgrid/fluxgrid-css/src/css/index.css'` },
             { label: 'Modular', code: `import '@datafluxgrid/fluxgrid-css/src/css/tokens.css'\nimport '@datafluxgrid/fluxgrid-css/src/css/grid.css'\nimport '@datafluxgrid/fluxgrid-css/src/css/forms.css'` },
         ],
     },
     {
         step: '03', icon: Play, title: 'Start building',
-        desc: 'Use c- prefixed utility classes directly in your HTML or JSX.',
+        desc: 'Use c- prefixed classes directly in your HTML or JSX.',
         tabs: [
             {
                 label: 'HTML', code: `<div class="c-container">
   <div class="c-row c-gap-4">
-    <div class="c-col-12 c-col-md-6 c-col-lg-4">
-      <div class="c-p-6 c-rounded-xl c-shadow c-border c-border-base c-hover-lift c-transition">
-        <h2 class="c-text-xl c-font-bold c-mb-2">Card Title</h2>
-        <p class="c-text-muted c-text-sm c-mb-4">Description here.</p>
-        <button class="c-btn c-btn-primary">Get Started</button>
+    <div class="c-col-12 c-col-md-6">
+      <div class="c-p-6 c-rounded-xl c-shadow c-hover-lift c-transition">
+        <h2 class="c-text-xl c-font-bold">Card Title</h2>
+        <button class="c-btn c-btn-primary c-mt-4">
+          Get Started
+        </button>
       </div>
     </div>
   </div>
@@ -39,15 +41,13 @@ const steps = [
                 label: 'Dark Mode', code: `<!-- Manual toggle -->
 <html data-theme="dark">
 
-<!-- Auto via system preference -->
+<!-- Auto via system -->
 <html>
-<!-- Works automatically, no setup needed -->
 
 <!-- Override tokens -->
 <style>
   :root {
     --c-primary-500: #6C63FF;
-    --c-font-sans: "Inter", sans-serif;
   }
 </style>`,
             },
@@ -55,89 +55,74 @@ const steps = [
     },
 ]
 
-function CodeBlock({ code }) {
-    return (
-        <pre style={{ margin: 0, padding: '16px', backgroundColor: 'var(--c-gray-950)', color: 'var(--c-gray-100)', fontSize: '12px', fontFamily: 'monospace', lineHeight: 1.7, overflowX: 'auto', borderRadius: '10px' }}>
-            <code>{code}</code>
-        </pre>
-    )
-}
-
-function StepCard({ step, index }) {
+function StepCard({ step, index, isLast }) {
     const { ref, inView } = useInView()
     const [tab, setTab] = useState(0)
 
     return (
         <div
             ref={ref}
-            className={inView ? 'c-animate-fade-in-left' : ''}
-            style={{ opacity: inView ? undefined : 0, willChange: inView ? 'auto' : 'opacity, transform', display: 'flex', gap: '20px', animationDelay: `${index * 150}ms` }}
+            className={`c-row ${inView ? 'c-animate-fade-in-up' : 'c-opacity-0'}`}
+            style={{ animationDelay: `${index * 100}ms` }}
         >
-            <div style={{ flexShrink: 0 }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: 'var(--c-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <step.icon size={22} style={{ color: 'white' }} />
-                </div>
-                {index < 2 && (
-                    <div style={{ width: '2px', height: '40px', backgroundColor: 'var(--c-border)', margin: '8px auto 0', borderRadius: '2px' }} />
-                )}
+            <div className="c-col-auto c-flex c-flex-col c-items-center" style={{ width: 'auto', padding: 0, marginLeft: '1rem' }}>
+                <span className="c-size-12 c-rounded-xl c-bg-primary-600 c-flex c-items-center c-justify-center c-flex-shrink-0">
+                    <step.icon size={20} className="c-text-white" />
+                </span>
+                {!isLast && <span className="c-flex-1 c-mt-2" style={{ width: '2px', backgroundColor: 'var(--c-border)', minHeight: '40px' }} />}
             </div>
-            <div style={{ flex: 1, paddingBottom: index < 2 ? '32px' : 0 }}>
-                <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--c-primary-500)', letterSpacing: '0.08em', marginBottom: '6px' }}>STEP {step.step}</div>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>{step.title}</h3>
-                <p style={{ fontSize: '14px', color: 'var(--c-muted)', marginBottom: '16px' }}>{step.desc}</p>
 
-                <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
+            <div className="c-flex-1 c-pl-4 c-pb-10" style={{ minWidth: 0 }}>
+                <div className="c-text-xs c-font-black c-text-primary-500 c-tracking-widest c-mb-1">
+                    STEP {step.step}
+                </div>
+                <h3 className="c-text-lg c-md-text-xl c-font-bold c-mb-2">{step.title}</h3>
+                <p className="c-text-sm c-text-muted c-mb-4">{step.desc}</p>
+
+                <div className="c-flex c-gap-2 c-mb-2" style={{ flexWrap: 'wrap' }}>
                     {step.tabs.map((t, i) => (
                         <button
                             key={t.label}
                             onClick={() => setTab(i)}
-                            style={{
-                                padding: '4px 12px',
-                                borderRadius: '6px',
-                                border: '1px solid',
-                                fontSize: '12px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                transition: 'all 150ms',
-                                borderColor: tab === i ? 'var(--c-primary-500)' : 'var(--c-border)',
-                                backgroundColor: tab === i ? 'var(--c-primary-500)' : 'transparent',
-                                color: tab === i ? 'white' : 'var(--c-muted)',
-                            }}
+                            className={`c-px-3 c-py-1 c-rounded-md c-text-xs c-font-medium c-border c-transition-colors ${tab === i ? 'c-bg-primary-500 c-text-white c-border-primary-500' : 'c-text-muted c-border-base'}`}
+                            style={{ cursor: 'pointer' }}
                         >
                             {t.label}
                         </button>
                     ))}
                 </div>
-                <CodeBlock code={step.tabs[tab].code} />
+
+                <div className="c-rounded-lg c-overflow-hidden c-border c-border-base">
+                    <pre className="c-overflow-x-auto c-p-4 c-text-xs c-font-mono c-bg-gray-950 c-text-gray-100" style={{ margin: 0, lineHeight: 1.7 }}>
+                        <code>{step.tabs[tab].code}</code>
+                    </pre>
+                </div>
             </div>
         </div>
     )
 }
 
-import { useState } from 'react'
-
 export default function QuickStart() {
     const { ref: titleRef, inView: titleIn } = useInView()
 
     return (
-        <section id="quick-start" style={{ padding: '96px 0', borderTop: '1px solid var(--c-border)' }}>
+        <section id="quick-start" className="c-py-20 c-md-py-24 c-border-t c-border-base">
             <div className="c-container">
                 <div
                     ref={titleRef}
-                    className={titleIn ? 'c-animate-fade-in-up' : ''}
-                    style={{ opacity: titleIn ? undefined : 0, willChange: titleIn ? 'auto' : 'opacity, transform', textAlign: 'center', marginBottom: '64px' }}
+                    className={`c-text-center c-mb-12 c-md-mb-16 ${titleIn ? 'c-animate-fade-in-up' : 'c-opacity-0'}`}
                 >
-                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, marginBottom: '16px' }}>
+                    <h2 className="c-text-3xl c-md-text-4xl c-font-black c-mb-4">
                         Up and running in <span className="c-text-primary-500">3 steps</span>
                     </h2>
-                    <p style={{ fontSize: '1.125rem', color: 'var(--c-muted)', maxWidth: '480px', margin: '0 auto' }}>
+                    <p className="c-text-base c-md-text-lg c-text-muted c-max-w-prose c-mx-auto">
                         No config files. No build pipeline. No decisions before your first line of CSS.
                     </p>
                 </div>
 
-                <div style={{ maxWidth: '680px', margin: '0 auto' }}>
+                <div className="c-max-w-3xl c-mx-auto">
                     {steps.map((step, i) => (
-                        <StepCard key={step.step} step={step} index={i} />
+                        <StepCard key={step.step} step={step} index={i} isLast={i === steps.length - 1} />
                     ))}
                 </div>
             </div>

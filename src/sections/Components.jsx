@@ -1,112 +1,5 @@
 import { useState } from 'react'
-
-function CodeBlock({ code }) {
-    return (
-        <pre
-            style={{
-                margin: 0,
-                padding: '16px',
-                backgroundColor: 'var(--c-gray-950)',
-                color: 'var(--c-gray-100)',
-                fontSize: '12px',
-                fontFamily: 'monospace',
-                lineHeight: '1.7',
-                overflowX: 'auto',
-                borderTop: '1px solid var(--c-border)',
-            }}
-        >
-            <code>{code}</code>
-        </pre>
-    )
-}
-
-function Row({ title, preview, code }) {
-    const [showCode, setShowCode] = useState(false)
-    return (
-        <div style={{ borderBottom: '1px solid var(--c-border)' }}>
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '180px 1fr',
-                    minHeight: '64px',
-                }}
-            >
-                <div
-                    style={{
-                        padding: '16px',
-                        borderRight: '1px solid var(--c-border)',
-                        backgroundColor: 'color-mix(in srgb, var(--c-gray-100) 40%, transparent)',
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}
-                >
-                    <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--c-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                        {title}
-                    </span>
-                </div>
-                <div
-                    style={{
-                        padding: '16px 20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '16px',
-                        flexWrap: 'wrap',
-                        backgroundColor: 'var(--c-bg)',
-                    }}
-                >
-                    <div style={{ flex: 1, minWidth: 0 }}>{preview}</div>
-                    <button
-                        onClick={() => setShowCode((v) => !v)}
-                        style={{
-                            padding: '4px 10px',
-                            borderRadius: '6px',
-                            border: '1px solid var(--c-border)',
-                            backgroundColor: 'transparent',
-                            color: 'var(--c-muted)',
-                            fontSize: '11px',
-                            cursor: 'pointer',
-                            flexShrink: 0,
-                            fontFamily: 'monospace',
-                        }}
-                    >
-                        {showCode ? 'Hide' : '</>'}
-                    </button>
-                </div>
-            </div>
-            {showCode && <CodeBlock code={code} />}
-        </div>
-    )
-}
-
-function Table({ title, rows }) {
-    return (
-        <div
-            style={{
-                borderRadius: '12px',
-                border: '1px solid var(--c-border)',
-                overflow: 'hidden',
-                marginBottom: '24px',
-            }}
-        >
-            <div
-                style={{
-                    padding: '12px 20px',
-                    borderBottom: '1px solid var(--c-border)',
-                    backgroundColor: 'color-mix(in srgb, var(--c-primary-500) 6%, var(--c-bg))',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                }}
-            >
-                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--c-fg)' }}>{title}</span>
-            </div>
-            {rows.map((row) => (
-                <Row key={row.title} {...row} />
-            ))}
-        </div>
-    )
-}
+import useInView from '../hooks/useInView'
 
 function CustomSelect({ id, placeholder = 'Choose an option', options = [], defaultActive = null, error = false, success = false, size = '' }) {
     const [value, setValue] = useState(defaultActive || placeholder)
@@ -135,433 +28,158 @@ function CustomSelect({ id, placeholder = 'Choose an option', options = [], defa
     )
 }
 
-const tabs = ['Buttons', 'Inputs', 'Select', 'Badges', 'Form Groups']
+const tabs = ['Buttons', 'Inputs', 'Select', 'Badges', 'Forms']
 
-const tables = {
+const data = {
     Buttons: [
-        {
-            title: 'Button Variants',
-            rows: [
-                {
-                    title: 'Primary',
-                    preview: <button className="c-btn c-btn-primary">Primary</button>,
-                    code: `<button class="c-btn c-btn-primary">Primary</button>`,
-                },
-                {
-                    title: 'Secondary',
-                    preview: <button className="c-btn c-btn-secondary">Secondary</button>,
-                    code: `<button class="c-btn c-btn-secondary">Secondary</button>`,
-                },
-                {
-                    title: 'Outline',
-                    preview: <button className="c-btn c-btn-outline">Outline</button>,
-                    code: `<button class="c-btn c-btn-outline">Outline</button>`,
-                },
-                {
-                    title: 'Ghost',
-                    preview: <button className="c-btn c-btn-ghost">Ghost</button>,
-                    code: `<button class="c-btn c-btn-ghost">Ghost</button>`,
-                },
-                {
-                    title: 'Danger',
-                    preview: <button className="c-btn c-btn-danger">Danger</button>,
-                    code: `<button class="c-btn c-btn-danger">Danger</button>`,
-                },
-                {
-                    title: 'Success',
-                    preview: <button className="c-btn c-btn-success">Success</button>,
-                    code: `<button class="c-btn c-btn-success">Success</button>`,
-                },
-            ],
-        },
-        {
-            title: 'Button Sizes',
-            rows: [
-                {
-                    title: 'XSmall',
-                    preview: <button className="c-btn c-btn-primary c-btn-xs">XSmall</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-xs">XSmall</button>`,
-                },
-                {
-                    title: 'Small',
-                    preview: <button className="c-btn c-btn-primary c-btn-sm">Small</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-sm">Small</button>`,
-                },
-                {
-                    title: 'Default',
-                    preview: <button className="c-btn c-btn-primary">Default</button>,
-                    code: `<button class="c-btn c-btn-primary">Default</button>`,
-                },
-                {
-                    title: 'Large',
-                    preview: <button className="c-btn c-btn-primary c-btn-lg">Large</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-lg">Large</button>`,
-                },
-                {
-                    title: 'XLarge',
-                    preview: <button className="c-btn c-btn-primary c-btn-xl">XLarge</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-xl">XLarge</button>`,
-                },
-            ],
-        },
-        {
-            title: 'Button States',
-            rows: [
-                {
-                    title: 'Loading',
-                    preview: <button className="c-btn c-btn-primary c-btn-loading">Saving...</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-loading">Saving...</button>`,
-                },
-                {
-                    title: 'Full Width',
-                    preview: <button className="c-btn c-btn-primary c-btn-full">Full Width</button>,
-                    code: `<button class="c-btn c-btn-primary c-btn-full">Full Width</button>`,
-                },
-                {
-                    title: 'Disabled',
-                    preview: <button className="c-btn c-btn-primary" disabled>Disabled</button>,
-                    code: `<button class="c-btn c-btn-primary" disabled>Disabled</button>`,
-                },
-            ],
-        },
+        { title: 'Primary', code: `<button class="c-btn c-btn-primary">Primary</button>`, preview: <button className="c-btn c-btn-primary">Primary</button> },
+        { title: 'Secondary', code: `<button class="c-btn c-btn-secondary">Secondary</button>`, preview: <button className="c-btn c-btn-secondary">Secondary</button> },
+        { title: 'Outline', code: `<button class="c-btn c-btn-outline">Outline</button>`, preview: <button className="c-btn c-btn-outline">Outline</button> },
+        { title: 'Ghost', code: `<button class="c-btn c-btn-ghost">Ghost</button>`, preview: <button className="c-btn c-btn-ghost">Ghost</button> },
+        { title: 'Danger', code: `<button class="c-btn c-btn-danger">Danger</button>`, preview: <button className="c-btn c-btn-danger">Danger</button> },
+        { title: 'Small', code: `<button class="c-btn c-btn-primary c-btn-sm">Small</button>`, preview: <button className="c-btn c-btn-primary c-btn-sm">Small</button> },
+        { title: 'Large', code: `<button class="c-btn c-btn-primary c-btn-lg">Large</button>`, preview: <button className="c-btn c-btn-primary c-btn-lg">Large</button> },
+        { title: 'Loading', code: `<button class="c-btn c-btn-primary c-btn-loading">Saving...</button>`, preview: <button className="c-btn c-btn-primary c-btn-loading">Saving</button> },
+        { title: 'Disabled', code: `<button class="c-btn c-btn-primary" disabled>Disabled</button>`, preview: <button className="c-btn c-btn-primary" disabled>Disabled</button> },
     ],
     Inputs: [
+        { title: 'Default', code: `<input class="c-input" placeholder="Enter text..." />`, preview: <input className="c-input" placeholder="Enter text..." /> },
+        { title: 'Error', code: `<input class="c-input c-input-error" placeholder="Error" />`, preview: <input className="c-input c-input-error" placeholder="Error" /> },
+        { title: 'Success', code: `<input class="c-input c-input-success" placeholder="Success" />`, preview: <input className="c-input c-input-success" placeholder="Success" /> },
+        { title: 'Small', code: `<input class="c-input c-input-sm" placeholder="Small" />`, preview: <input className="c-input c-input-sm" placeholder="Small" /> },
+        { title: 'Large', code: `<input class="c-input c-input-lg" placeholder="Large" />`, preview: <input className="c-input c-input-lg" placeholder="Large" /> },
         {
-            title: 'Input',
-            rows: [
-                {
-                    title: 'Default',
-                    preview: <input className="c-input" placeholder="Enter text..." style={{ maxWidth: '300px' }} />,
-                    code: `<input class="c-input" placeholder="Enter text..." />`,
-                },
-                {
-                    title: 'Error State',
-                    preview: <input className="c-input c-input-error" placeholder="Error state" style={{ maxWidth: '300px' }} />,
-                    code: `<input class="c-input c-input-error" placeholder="Error state" />`,
-                },
-                {
-                    title: 'Success State',
-                    preview: <input className="c-input c-input-success" placeholder="Success state" style={{ maxWidth: '300px' }} />,
-                    code: `<input class="c-input c-input-success" placeholder="Success state" />`,
-                },
-                {
-                    title: 'Small',
-                    preview: <input className="c-input c-input-sm" placeholder="Small input" style={{ maxWidth: '300px' }} />,
-                    code: `<input class="c-input c-input-sm" placeholder="Small input" />`,
-                },
-                {
-                    title: 'Large',
-                    preview: <input className="c-input c-input-lg" placeholder="Large input" style={{ maxWidth: '300px' }} />,
-                    code: `<input class="c-input c-input-lg" placeholder="Large input" />`,
-                },
-                {
-                    title: 'Input Group',
-                    preview: (
-                        <div className="c-input-group" style={{ maxWidth: '300px' }}>
-                            <span className="c-input-addon">https://</span>
-                            <input type="text" className="c-input" placeholder="yoursite.com" />
-                        </div>
-                    ),
-                    code: `<div class="c-input-group">
-  <span class="c-input-addon">https://</span>
-  <input type="text" class="c-input" placeholder="yoursite.com" />
-</div>`,
-                },
-            ],
+            title: 'Input Group',
+            code: `<div class="c-input-group">\n  <span class="c-input-addon">https://</span>\n  <input class="c-input" placeholder="yoursite.com" />\n</div>`,
+            preview: <div className="c-input-group"><span className="c-input-addon">https://</span><input className="c-input" placeholder="yoursite.com" /></div>,
         },
         {
-            title: 'Checkbox & Radio',
-            rows: [
-                {
-                    title: 'Checkbox',
-                    preview: (
-                        <label className="c-flex c-items-center c-gap-2">
-                            <input type="checkbox" defaultChecked />
-                            <span className="c-text-sm">Accept terms</span>
-                        </label>
-                    ),
-                    code: `<label class="c-flex c-items-center c-gap-2">
-  <input type="checkbox" checked />
-  <span class="c-text-sm">Accept terms</span>
-</label>`,
-                },
-                {
-                    title: 'Unchecked',
-                    preview: (
-                        <label className="c-flex c-items-center c-gap-2">
-                            <input type="checkbox" />
-                            <span className="c-text-sm">Subscribe to newsletter</span>
-                        </label>
-                    ),
-                    code: `<label class="c-flex c-items-center c-gap-2">
-  <input type="checkbox" />
-  <span class="c-text-sm">Subscribe to newsletter</span>
-</label>`,
-                },
-                {
-                    title: 'Radio',
-                    preview: (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <label className="c-flex c-items-center c-gap-2">
-                                <input type="radio" name="rb" defaultChecked />
-                                <span className="c-text-sm">Option A</span>
-                            </label>
-                            <label className="c-flex c-items-center c-gap-2">
-                                <input type="radio" name="rb" />
-                                <span className="c-text-sm">Option B</span>
-                            </label>
-                        </div>
-                    ),
-                    code: `<label class="c-flex c-items-center c-gap-2">
-  <input type="radio" name="r" checked />
-  <span class="c-text-sm">Option A</span>
-</label>`,
-                },
-                {
-                    title: 'Range',
-                    preview: <input type="range" min="0" max="100" defaultValue="60" style={{ width: '200px' }} />,
-                    code: `<input type="range" min="0" max="100" value="60" />`,
-                },
-            ],
+            title: 'Checkbox',
+            code: `<label class="c-flex c-items-center c-gap-2">\n  <input type="checkbox" checked />\n  <span>Accept terms</span>\n</label>`,
+            preview: <label className="c-flex c-items-center c-gap-2"><input type="checkbox" defaultChecked /><span className="c-text-sm">Accept terms</span></label>,
         },
+        {
+            title: 'Radio',
+            preview: (
+                <div className="c-flex c-gap-4">
+                    <label className="c-flex c-items-center c-gap-2"><input type="radio" name="r1" defaultChecked /><span className="c-text-sm">A</span></label>
+                    <label className="c-flex c-items-center c-gap-2"><input type="radio" name="r1" /><span className="c-text-sm">B</span></label>
+                </div>
+            ),
+            code: `<label class="c-flex c-items-center c-gap-2">\n  <input type="radio" name="r" checked />\n  <span>Option A</span>\n</label>`,
+        },
+        { title: 'Range', code: `<input type="range" min="0" max="100" value="60" />`, preview: <input type="range" min="0" max="100" defaultValue="60" className="c-w-100" /> },
     ],
     Select: [
+        { title: 'Default', code: `<div class="c-select-wrap">...</div>`, preview: <CustomSelect id="cs1" defaultActive="Option One" options={['Option One', 'Option Two', 'Option Three']} /> },
+        { title: 'Small', code: `<div class="c-select-wrap c-select-wrap-sm">...</div>`, preview: <CustomSelect id="cs2" size="sm" placeholder="Small" options={['One', 'Two']} /> },
+        { title: 'Large', code: `<div class="c-select-wrap c-select-wrap-lg">...</div>`, preview: <CustomSelect id="cs3" size="lg" placeholder="Large" options={['One', 'Two']} /> },
+        { title: 'Error', code: `<div class="c-select-wrap c-select-wrap-error">...</div>`, preview: <CustomSelect id="cs4" placeholder="Error state" error options={['One', 'Two']} /> },
+        { title: 'Success', code: `<div class="c-select-wrap c-select-wrap-success">...</div>`, preview: <CustomSelect id="cs5" placeholder="Success state" success options={['One', 'Two']} /> },
         {
-            title: 'Custom Select',
-            rows: [
-                {
-                    title: 'Default',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }}>
-                            <CustomSelect id="s-def" defaultActive="Option One" options={['Option One', 'Option Two', 'Option Three', 'Option Four']} />
-                        </div>
-                    ),
-                    code: `<div class="c-select-wrap">
-  <input type="checkbox" class="c-select-toggle" id="s1">
-  <label class="c-select-trigger" for="s1">
-    <span class="c-select-value">Option One</span>
-    <svg class="c-select-arrow">...</svg>
-  </label>
-  <ul class="c-select-dropdown">
-    <li class="c-select-item c-select-item-active">Option One</li>
-    <li class="c-select-item">Option Two</li>
-    <li class="c-select-item">Option Three</li>
-  </ul>
-</div>`,
-                },
-                {
-                    title: 'Small',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }}>
-                            <CustomSelect id="s-sm" size="sm" placeholder="Small select" options={['Option One', 'Option Two']} />
-                        </div>
-                    ),
-                    code: `<div class="c-select-wrap c-select-wrap-sm">...</div>`,
-                },
-                {
-                    title: 'Large',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }}>
-                            <CustomSelect id="s-lg" size="lg" placeholder="Large select" options={['Option One', 'Option Two']} />
-                        </div>
-                    ),
-                    code: `<div class="c-select-wrap c-select-wrap-lg">...</div>`,
-                },
-                {
-                    title: 'Error State',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }}>
-                            <CustomSelect id="s-err" placeholder="Error state" error options={['Option One', 'Option Two']} />
-                        </div>
-                    ),
-                    code: `<div class="c-select-wrap c-select-wrap-error">...</div>`,
-                },
-                {
-                    title: 'Success State',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }}>
-                            <CustomSelect id="s-suc" placeholder="Success state" success options={['Option One', 'Option Two']} />
-                        </div>
-                    ),
-                    code: `<div class="c-select-wrap c-select-wrap-success">...</div>`,
-                },
-                {
-                    title: 'Group & Divider',
-                    preview: (
-                        <div style={{ maxWidth: '280px' }} className="c-select-wrap">
-                            <input type="checkbox" className="c-select-toggle" id="s-grp" />
-                            <label className="c-select-trigger" htmlFor="s-grp">
-                                <span className="c-select-value">Choose a category</span>
-                                <svg className="c-select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </label>
-                            <ul className="c-select-dropdown">
-                                <li className="c-select-group-label">Fruits</li>
-                                <li className="c-select-item" onClick={() => { document.getElementById('s-grp').checked = false }}>Apple</li>
-                                <li className="c-select-item" onClick={() => { document.getElementById('s-grp').checked = false }}>Mango</li>
-                                <li className="c-select-divider"></li>
-                                <li className="c-select-group-label">Veggies</li>
-                                <li className="c-select-item" onClick={() => { document.getElementById('s-grp').checked = false }}>Carrot</li>
-                                <li className="c-select-item c-select-item-disabled">Disabled Item</li>
-                            </ul>
-                        </div>
-                    ),
-                    code: `<ul class="c-select-dropdown">
-  <li class="c-select-group-label">Fruits</li>
-  <li class="c-select-item">Apple</li>
-  <li class="c-select-divider"></li>
-  <li class="c-select-group-label">Veggies</li>
-  <li class="c-select-item">Carrot</li>
-  <li class="c-select-item c-select-item-disabled">Disabled</li>
-</ul>`,
-                },
-                {
-                    title: 'Native Select',
-                    preview: (
-                        <select className="c-select" style={{ maxWidth: '280px' }}>
-                            <option>Option One</option>
-                            <option>Option Two</option>
-                            <option>Option Three</option>
-                        </select>
-                    ),
-                    code: `<select class="c-select">
-  <option>Option One</option>
-  <option>Option Two</option>
-</select>`,
-                },
-                {
-                    title: 'Textarea',
-                    preview: <textarea className="c-textarea" rows="3" placeholder="Write your message..." style={{ maxWidth: '400px' }} />,
-                    code: `<textarea class="c-textarea" rows="4" placeholder="Write your message..."></textarea>`,
-                },
-            ],
+            title: 'Native',
+            code: `<select class="c-select">\n  <option>One</option>\n  <option>Two</option>\n</select>`,
+            preview: <select className="c-select"><option>Option One</option><option>Option Two</option></select>,
         },
+        { title: 'Textarea', code: `<textarea class="c-textarea" rows="3"></textarea>`, preview: <textarea className="c-textarea" rows="3" placeholder="Message..." /> },
     ],
     Badges: [
-        {
-            title: 'Light Badges',
-            rows: [
-                { title: 'Primary', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-100 c-text-primary-700">Primary</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-100 c-text-primary-700">Primary</span>` },
-                { title: 'Success', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-success-100 c-text-success-700">Success</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-success-100 c-text-success-700">Success</span>` },
-                { title: 'Error', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-error-100 c-text-error-700">Error</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-error-100 c-text-error-700">Error</span>` },
-                { title: 'Warning', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-warning-100 c-text-warning-700">Warning</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-warning-100 c-text-warning-700">Warning</span>` },
-                { title: 'Info', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-info-100 c-text-info-700">Info</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-info-100 c-text-info-700">Info</span>` },
-            ],
-        },
-        {
-            title: 'Solid Badges',
-            rows: [
-                { title: 'Primary', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-500 c-text-white">Primary</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-500 c-text-white">Primary</span>` },
-                { title: 'Success', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-success-500 c-text-white">Success</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-success-500 c-text-white">Success</span>` },
-                { title: 'Error', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-error-500 c-text-white">Error</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-error-500 c-text-white">Error</span>` },
-                { title: 'Warning', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-warning-500 c-text-white">Warning</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-warning-500 c-text-white">Warning</span>` },
-                { title: 'Info', preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-info-500 c-text-white">Info</span>, code: `<span class="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-info-500 c-text-white">Info</span>` },
-            ],
-        },
+        { title: 'Primary', code: `<span class="c-bg-primary-100 c-text-primary-700 ...">Primary</span>`, preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-100 c-text-primary-700">Primary</span> },
+        { title: 'Success', code: `<span class="c-bg-success-100 c-text-success-700 ...">Success</span>`, preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-success-100 c-text-success-700">Success</span> },
+        { title: 'Error', code: `<span class="c-bg-error-100 c-text-error-700 ...">Error</span>`, preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-error-100 c-text-error-700">Error</span> },
+        { title: 'Warning', code: `<span class="c-bg-warning-100 c-text-warning-700 ...">Warning</span>`, preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-warning-100 c-text-warning-700">Warning</span> },
+        { title: 'Solid', code: `<span class="c-bg-primary-500 c-text-white ...">Primary</span>`, preview: <span className="c-px-3 c-py-1 c-rounded-full c-text-xs c-font-semibold c-bg-primary-500 c-text-white">Primary</span> },
     ],
-    'Form Groups': [
+    Forms: [
         {
-            title: 'Form Groups',
-            rows: [
-                {
-                    title: 'With Hint',
-                    preview: (
-                        <div className="c-form-group" style={{ maxWidth: '320px', marginBottom: 0 }}>
-                            <label className="c-label c-label-required">Email</label>
-                            <input type="email" className="c-input" placeholder="you@example.com" />
-                            <span className="c-form-hint">We will never share your email.</span>
-                        </div>
-                    ),
-                    code: `<div class="c-form-group">
-  <label class="c-label c-label-required">Email</label>
-  <input type="email" class="c-input" placeholder="you@example.com" />
-  <span class="c-form-hint">We will never share your email.</span>
-</div>`,
-                },
-                {
-                    title: 'With Error',
-                    preview: (
-                        <div className="c-form-group" style={{ maxWidth: '320px', marginBottom: 0 }}>
-                            <label className="c-label c-label-required">Password</label>
-                            <input type="password" className="c-input c-input-error" placeholder="••••••••" />
-                            <span className="c-form-error">Password must be at least 8 characters.</span>
-                        </div>
-                    ),
-                    code: `<div class="c-form-group">
-  <label class="c-label c-label-required">Password</label>
-  <input type="password" class="c-input c-input-error" placeholder="••••••••" />
-  <span class="c-form-error">Password must be at least 8 characters.</span>
-</div>`,
-                },
-                {
-                    title: 'Range Slider',
-                    preview: <input type="range" min="0" max="100" defaultValue="60" style={{ width: '200px' }} />,
-                    code: `<input type="range" min="0" max="100" value="60" />`,
-                },
-            ],
+            title: 'Form Group',
+            code: `<div class="c-form-group">\n  <label class="c-label">Email</label>\n  <input class="c-input" />\n  <span class="c-form-hint">Hint text</span>\n</div>`,
+            preview: (
+                <div className="c-form-group" style={{ marginBottom: 0, maxWidth: '260px' }}>
+                    <label className="c-label c-label-required">Email</label>
+                    <input type="email" className="c-input" placeholder="you@example.com" />
+                    <span className="c-form-hint">We will never share your email.</span>
+                </div>
+            ),
+        },
+        {
+            title: 'Form Error',
+            code: `<div class="c-form-group">\n  <input class="c-input c-input-error" />\n  <span class="c-form-error">Error text</span>\n</div>`,
+            preview: (
+                <div className="c-form-group" style={{ marginBottom: 0, maxWidth: '260px' }}>
+                    <label className="c-label c-label-required">Password</label>
+                    <input type="password" className="c-input c-input-error" placeholder="••••••••" />
+                    <span className="c-form-error">Must be at least 8 characters.</span>
+                </div>
+            ),
         },
     ],
 }
 
+function Row({ item }) {
+    const [showCode, setShowCode] = useState(false)
+    return (
+        <div className="c-border-b c-border-base">
+            <div className="c-row c-items-center" style={{ minHeight: '56px' }}>
+                <div className="c-col-12 c-col-md-3 c-py-2 c-md-py-3">
+                    <span className="c-text-xs c-font-semibold c-text-muted c-uppercase c-tracking-wide">{item.title}</span>
+                </div>
+                <div className="c-col-12 c-col-md-9 c-py-3 c-flex c-items-center c-justify-between c-gap-3" style={{ flexWrap: 'wrap' }}>
+                    <div style={{ minWidth: 0, maxWidth: '100%' }}>{item.preview}</div>
+                    <button
+                        onClick={() => setShowCode((v) => !v)}
+                        className="c-btn c-btn-ghost c-btn-xs c-font-mono c-flex-shrink-0"
+                    >
+                        {showCode ? 'hide' : '</>'}
+                    </button>
+                </div>
+            </div>
+            {showCode && (
+                <pre className="c-overflow-x-auto c-p-3 c-text-xs c-font-mono c-bg-gray-950 c-text-gray-100 c-rounded c-mb-3" style={{ margin: '0 0 12px', lineHeight: 1.7 }}>
+                    <code>{item.code}</code>
+                </pre>
+            )}
+        </div>
+    )
+}
+
 export default function Components() {
     const [activeTab, setActiveTab] = useState('Buttons')
+    const { ref: titleRef, inView: titleIn } = useInView()
 
     return (
-        <section id="components" style={{ padding: '96px 0', borderTop: '1px solid var(--c-border)' }}>
+        <section id="components" className="c-py-20 c-md-py-24 c-border-t c-border-base">
             <div className="c-container">
-
-                <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-                    <h2 className="c-text-4xl c-font-black c-mb-4">
+                <div
+                    ref={titleRef}
+                    className={`c-text-center c-mb-10 c-md-mb-12 ${titleIn ? 'c-animate-fade-in-up' : 'c-opacity-0'}`}
+                >
+                    <h2 className="c-text-3xl c-md-text-4xl c-font-black c-mb-4">
                         Ready-made <span className="c-text-primary-500">Components</span>
                     </h2>
-                    <p className="c-text-lg c-text-muted c-max-w-prose c-mx-auto">
-                        Production-ready buttons, inputs, badges, and form elements — no JavaScript required.
+                    <p className="c-text-base c-md-text-lg c-text-muted c-max-w-prose c-mx-auto">
+                        Production-ready buttons, inputs, and form elements — no JavaScript required.
                     </p>
                 </div>
 
-                <div
-                    style={{
-                        display: 'flex',
-                        gap: '4px',
-                        padding: '4px',
-                        borderRadius: '12px',
-                        backgroundColor: 'var(--c-gray-100)',
-                        marginBottom: '32px',
-                        overflowX: 'auto',
-                    }}
-                >
+                <div className="c-flex c-gap-1 c-p-1 c-rounded-lg c-bg-gray-100 c-mb-6 c-overflow-x-auto c-scrollbar-none">
                     {tabs.map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            style={{
-                                flex: 1,
-                                minWidth: 'max-content',
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                border: 'none',
-                                whiteSpace: 'nowrap',
-                                transition: 'all 200ms',
-                                backgroundColor: activeTab === tab ? 'var(--c-bg)' : 'transparent',
-                                color: activeTab === tab ? 'var(--c-primary-600)' : 'var(--c-muted)',
-                                boxShadow: activeTab === tab ? 'var(--c-shadow-sm)' : 'none',
-                            }}
+                            className={`c-px-4 c-py-2 c-rounded-md c-text-sm c-font-medium c-transition-colors c-flex-shrink-0 ${activeTab === tab ? 'c-bg-base c-shadow-sm c-text-primary-600' : 'c-text-muted'}`}
+                            style={{ border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
                         >
                             {tab}
                         </button>
                     ))}
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    {(tables[activeTab] || []).map((table) => (
-                        <Table key={table.title} title={table.title} rows={table.rows} />
+                <div className="c-rounded-xl c-border c-border-base c-overflow-hidden c-p-2 c-md-p-4">
+                    {(data[activeTab] || []).map((item) => (
+                        <Row key={item.title} item={item} />
                     ))}
                 </div>
-
             </div>
         </section>
     )
