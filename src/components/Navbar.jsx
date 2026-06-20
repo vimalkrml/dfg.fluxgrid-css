@@ -116,6 +116,9 @@ export default function Navbar({ theme, toggleTheme }) {
                                             <path d="m6 9 6 6 6-6" />
                                         </svg>
                                     </label>
+
+                                    <label className="c-select-backdrop" htmlFor="desktop-font-toggle"></label>
+
                                     <ul className="c-select-dropdown">
                                         {fonts.map((f) => (
                                             <li
@@ -222,6 +225,9 @@ export default function Navbar({ theme, toggleTheme }) {
                                         <path d="m6 9 6 6 6-6" />
                                     </svg>
                                 </label>
+
+                                <label className="c-select-backdrop" htmlFor="mobile-font-toggle"></label>
+
                                 <ul className="c-select-dropdown">
                                     {fonts.map((f) => (
                                         <li

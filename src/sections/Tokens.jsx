@@ -126,18 +126,35 @@ export default function Tokens() {
                         <div className="c-p-4 c-md-p-6 c-flex c-flex-col c-gap-5">
                             <div className="c-flex c-flex-col c-gap-2">
                                 <label className="c-label">Select a font — updates the entire site</label>
-                                <select
-                                    className="c-select"
-                                    value={selectedFont.class}
-                                    onChange={(e) => {
-                                        const found = fonts.find((f) => f.class === e.target.value)
-                                        if (found) setSelectedFont(found)
-                                    }}
-                                >
-                                    {fonts.map((f) => (
-                                        <option key={f.class} value={f.class}>{f.label}</option>
-                                    ))}
-                                </select>
+                                <div className="c-select-wrap">
+                                    <input type="checkbox" className="c-select-toggle" id="tokens-font-toggle" />
+                                    <label className="c-select-trigger" htmlFor="tokens-font-toggle">
+                                        <span className="c-select-value" style={{ fontFamily: selectedFont.family }}>
+                                            {selectedFont.label}
+                                        </span>
+                                        <svg className="c-select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="m6 9 6 6 6-6" />
+                                        </svg>
+                                    </label>
+
+                                    <label className="c-select-backdrop" htmlFor="tokens-font-toggle"></label>
+
+                                    <ul className="c-select-dropdown">
+                                        {fonts.map((f) => (
+                                            <li
+                                                key={f.class}
+                                                className={`c-select-item${selectedFont.class === f.class ? ' c-select-item-active' : ''}`}
+                                                style={{ fontFamily: f.family }}
+                                                onClick={() => {
+                                                    setSelectedFont(f)
+                                                    document.getElementById('tokens-font-toggle').checked = false
+                                                }}
+                                            >
+                                                {f.label}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
 
                             <div className="c-px-4 c-py-3 c-rounded-lg c-text-xs c-font-mono c-bg-gray-950 c-text-gray-100 c-overflow-x-auto c-whitespace-nowrap">
