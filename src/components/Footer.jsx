@@ -22,8 +22,8 @@ const links = [
     {
         group: 'Package', items: [
             { label: 'npm', href: 'https://www.npmjs.com/package/@datafluxgrid/fluxgrid-css' },
-            { label: 'GitHub', href: 'https://github.com/vimalkrml/Dev-Template' },
-            { label: 'License (MIT)', href: 'https://github.com/vimalkrml/Dev-Template/blob/main/LICENSE' },
+            { label: 'GitHub', href: 'https://github.com/vimalkrml/fluxgrid-css' },
+            { label: 'License (MIT)', href: 'https://github.com/vimalkrml/fluxgrid-css/blob/main/LICENSE' },
         ]
     },
     {
