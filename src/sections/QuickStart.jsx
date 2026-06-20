@@ -13,10 +13,49 @@ const steps = [
     },
     {
         step: '02', icon: FileCode, title: 'Import in your project',
-        desc: 'Import the full bundle or only the modules you need.',
+        desc: 'Drop the import into your entry point — works the same way everywhere.',
         tabs: [
-            { label: 'React', code: `import '@datafluxgrid/fluxgrid-css/src/css/index.css'` },
-            { label: 'Modular', code: `import '@datafluxgrid/fluxgrid-css/src/css/tokens.css'\nimport '@datafluxgrid/fluxgrid-css/src/css/grid.css'\nimport '@datafluxgrid/fluxgrid-css/src/css/forms.css'` },
+            {
+                label: 'React', code: `// main.jsx (Vite) or index.js (CRA)
+import '@datafluxgrid/fluxgrid-css/src/css/index.css'
+
+// Need only specific modules? Swap index.css for individual files:
+// import '@datafluxgrid/fluxgrid-css/src/css/tokens.css'
+// import '@datafluxgrid/fluxgrid-css/src/css/grid.css'`,
+            },
+            {
+                label: 'Next.js', code: `// app/layout.js (App Router)
+import '@datafluxgrid/fluxgrid-css/src/css/index.css'
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+
+// Pages Router? Import it in pages/_app.js instead.
+// Global CSS can only be imported at this top level in Next.js.`,
+            },
+            {
+                label: 'Vue', code: `// main.js
+import { createApp } from 'vue'
+import App from './App.vue'
+import '@datafluxgrid/fluxgrid-css/src/css/index.css'
+
+createApp(App).mount('#app')`,
+            },
+            {
+                label: 'Angular', code: `/* src/styles.css */
+@import '@datafluxgrid/fluxgrid-css/src/css/index.css';
+
+/* Or register it directly in angular.json instead: */
+/* "styles": [
+     "node_modules/@datafluxgrid/fluxgrid-css/src/css/index.css",
+     "src/styles.css"
+   ] */`,
+            },
         ],
     },
     {
