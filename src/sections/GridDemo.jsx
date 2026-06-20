@@ -18,7 +18,7 @@ const demos = [
         preview: (
             <div className="c-row c-gap-2">
                 {['One', 'Two', 'Three'].map((c) => (
-                    <div key={c} className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-success-100 c-text-success-700">col-4</div>
+                    <div key={c} className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-primary-100 c-text-primary-700">col-4</div>
                 ))}
             </div>
         ),
@@ -28,8 +28,8 @@ const demos = [
         code: `<div class="c-row">\n  <div class="c-col-4">Sidebar</div>\n  <div class="c-col-8">Content</div>\n</div>`,
         preview: (
             <div className="c-row c-gap-2">
-                <div className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-warning-100 c-text-warning-700">col-4</div>
-                <div className="c-col-8 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-warning-100 c-text-warning-700">col-8</div>
+                <div className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-primary-100 c-text-primary-700">col-4</div>
+                <div className="c-col-8 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-primary-100 c-text-primary-700">col-8</div>
             </div>
         ),
     },
@@ -39,7 +39,7 @@ const demos = [
         preview: (
             <div className="c-row c-gap-2">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-error-100 c-text-error-700">lg-4</div>
+                    <div key={i} className="c-col-4 c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-primary-100 c-text-primary-700">lg-4</div>
                 ))}
             </div>
         ),
@@ -50,7 +50,7 @@ const demos = [
         preview: (
             <div className="c-grid c-gap-2" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
                 {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-info-100 c-text-info-700">{i}</div>
+                    <div key={i} className="c-p-3 c-rounded-lg c-text-center c-text-xs c-font-medium c-bg-primary-100 c-text-primary-700">{i}</div>
                 ))}
             </div>
         ),
