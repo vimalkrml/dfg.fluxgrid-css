@@ -2,6 +2,14 @@ import { useState } from 'react'
 import { Check, X, Minus, Info } from 'lucide-react'
 import useInView from '../hooks/useInView'
 
+const reasons = [
+    { title: 'Skip the build step entirely', desc: 'One <link> tag or npm install \u2014 no CLI, no PostCSS config, no Vite plugin needed before you start.' },
+    { title: 'Real theming, not a config file', desc: 'Override a CSS variable in your own stylesheet and the whole site updates \u2014 no rebuild required.' },
+    { title: 'Interactive components without JavaScript', desc: 'The custom select and dropdowns work end-to-end in pure CSS, including closing on outside click.' },
+    { title: 'Motion without writing keyframes', desc: '50+ animation classes with duration, delay, easing, and iteration control built in.' },
+    { title: 'Safe to drop into an existing project', desc: 'Every class is c- prefixed, so it can\u2019t collide with your current CSS or another library.' },
+]
+
 const features = [
     {
         label: 'Zero build step',
@@ -176,6 +184,26 @@ export default function Why() {
                     <p className="c-text-base c-md-text-lg c-text-muted c-max-w-prose c-mx-auto">
                         An honest comparison against the most popular CSS frameworks, verified against their official docs.
                     </p>
+                </div>
+
+                <div className="c-max-w-prose c-mx-auto c-mb-16">
+                    <ol style={{ listStyle: 'none', padding: 0, margin: 0, counterReset: 'reason' }}>
+                        {reasons.map((reason) => (
+                            <li
+                                key={reason.title}
+                                className="c-flex c-gap-3 c-py-3 c-border-b c-border-base"
+                                style={{ counterIncrement: 'reason' }}
+                            >
+                                <span className="c-text-primary-500 c-font-black c-text-sm c-flex-shrink-0" style={{ width: '20px' }}>
+                                    {String(reasons.indexOf(reason) + 1).padStart(2, '0')}
+                                </span>
+                                <div>
+                                    <span className="c-text-sm c-font-semibold">{reason.title}</span>
+                                    <span className="c-text-sm c-text-muted"> — {reason.desc}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
 
                 <div
