@@ -5,10 +5,15 @@ import useInView from '../hooks/useInView'
 const steps = [
     {
         step: '01', icon: Terminal, title: 'Install the package',
-        desc: 'Install via npm or use the CDN link directly in your HTML.',
+        desc: 'Install via npm or use the CDN link directly in your HTML. Both src and dist paths are supported.',
         tabs: [
             { label: 'npm', code: `npm install @datafluxgrid/fluxgrid-css` },
-            { label: 'CDN', code: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@datafluxgrid/fluxgrid-css/src/css/index.css">` },
+            {
+                label: 'CDN (dist)', code: `<!-- Recommended: minified production bundle -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@datafluxgrid/fluxgrid-css/dist/fluxgrid.min.css">` },
+            {
+                label: 'CDN (src)', code: `<!-- Also works: unminified source -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@datafluxgrid/fluxgrid-css/src/css/index.css">` },
         ],
     },
     {
@@ -64,7 +69,7 @@ createApp(App).mount('#app')`,
         tabs: [
             {
                 label: 'HTML', code: `<div class="c-container">
-  <div class="c-row c-gap-4">
+  <div class="c-row">
     <div class="c-col-12 c-col-md-6">
       <div class="c-p-6 c-rounded-xl c-shadow c-hover-lift c-transition">
         <h2 class="c-text-xl c-font-bold">Card Title</h2>
@@ -80,7 +85,7 @@ createApp(App).mount('#app')`,
                 label: 'Dark Mode', code: `<!-- Manual toggle -->
 <html data-theme="dark">
 
-<!-- Auto via system -->
+<!-- Auto via system preference -->
 <html>
 
 <!-- Override tokens -->
